@@ -4,6 +4,8 @@
 #include<iostream>
 #include<map>
 #include "memmanager.h"
+#include "disk.h"
+
 using namespace std;
 
 //目录 
@@ -16,17 +18,17 @@ class Dir{
 			FileStructure="NULL";
 			adr=0; 
 		}
-	 string FileName; //文件名
-	 string FileOwner ;//文件所有者
-	 char *Date;//创建时间 
-	 string  FileStructure;//文件结构 
-	 int adr;//再磁盘中存放的地址信息 
-	 void setFileName(string a);
-	 void setFileOwner(string b);
-	 void setDate(char *c);
-	 void setFileStructure(string x);
-	 void setadr(int y);
-	 void show();
+		string FileName; //文件名
+		string FileOwner ;//文件所有者
+		char *Date;//创建时间 
+		string  FileStructure;//文件结构 
+		int adr;//再磁盘中存放的地址信息 
+		void setFileName(string a);
+		void setFileOwner(string b);
+		void setDate(char *c);
+		void setFileStructure(string x);
+		void setadr(int y);
+		void show();
 };
 	void Dir::setFileName(string a){
   		FileName=a;
@@ -76,7 +78,8 @@ class DirMan{
 	}
 	void DirMan::DelFile(string x){
 		if(!Memory::InMem(x)){	//内存管理中的函数，根据文件名判断是否在内存中 
-			DirMap.erase(x); //删除目录 
+			disk::delete_block(DirMap[x].adr);
+			DirMap.erase(x); //删除目录
 			//此处需要删除文件在磁盘中对应的数据； 
 		}
 	}
