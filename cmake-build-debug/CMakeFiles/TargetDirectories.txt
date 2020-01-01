@@ -1,0 +1,3 @@
+/Users/bonky/OneDrive/文档/学校资料存档/操作系统/课设/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/bonky/OneDrive/文档/学校资料存档/操作系统/课设/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/bonky/OneDrive/文档/学校资料存档/操作系统/课设/cmake-build-debug/CMakeFiles/test.dir
