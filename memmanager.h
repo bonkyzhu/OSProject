@@ -13,11 +13,11 @@ class Data{
 			sign=0;
 			thread_id=NULL;
 		}
-	int datasize;//Êı¾İ´óĞ¡£¬¶àÉÙ×Ö½Ú
-	string message;//Êı¾İĞÅÏ¢
-	string name;//ÎÄ¼şÃû
-	int sign;//±êÖ¾Î»
-	int thread_id;//ËùÊôÏß³Ìid 
+	int datasize;//æ•°æ®å¤§å°ï¼Œå¤šå°‘å­—èŠ‚
+	string message;//æ•°æ®ä¿¡æ¯
+	string name;//æ–‡ä»¶å
+	int sign;//æ ‡å¿—ä½
+	int thread_id;//æ‰€å±çº¿ç¨‹id 
 	void set(){
 		datasize=0;
 			message="NULL";
@@ -30,10 +30,10 @@ class Memory{
 public:
 	Data Mem [16];
 
-	int free=16;//¿ÕÏĞ¿éÊı 
-	queue<int> q;//·ûºÏFIFOËã·¨µÄµ÷³ö¶ÓÁĞ 
-    vector<int> Alloc(int Mb_num,int thread_id){//ÉêÇëÄÚ´æ¿é ·µ»Ø·ÖÅäµÄÄÚ´æ¿éÊı×é 
-        //Mb_num ÉêÇëµÄÄÚ´æ¿éÊı    thread_id  Ïß³Ìid
+	int free=16;//ç©ºé—²å—æ•° 
+	queue<int> q;//ç¬¦åˆFIFOç®—æ³•çš„è°ƒå‡ºé˜Ÿåˆ— 
+    vector<int> Alloc(int Mb_num,int thread_id){//ç”³è¯·å†…å­˜å— è¿”å›åˆ†é…çš„å†…å­˜å—æ•°ç»„ 
+        //Mb_num ç”³è¯·çš„å†…å­˜å—æ•°    thread_id  çº¿ç¨‹id
           vector<int> iv(Mb_num);
           if(Mb_num<=free) {
           	for(int i=0;i<Mb_num;i++){
@@ -48,7 +48,7 @@ public:
 				  }
 			  }
 			  free=free-Mb_num;
-		  } else{//ĞèÒªÖÃ»» 
+		  } else{//éœ€è¦ç½®æ¢ 
 		  	int i=0;
 		  	for(i=0;i<free;i++){
           		for(int j=0;j<16;j++){
@@ -62,8 +62,8 @@ public:
 				  }
 			  }
 			  for(int j=0;j<Mb_num-free;j++){
-			  	int z=q.front();//ÒªÖÃ»»³öÈ¥µÄ¿éºÅ 
-			  	disk::swap(thread_id,Mem[z].datasize,Mem[z].message,Mem[z].name);//»»µ½ÖÃ»»Çø
+			  	int z=q.front();//è¦ç½®æ¢å‡ºå»çš„å—å· 
+			  	disk::swap(thread_id,Mem[z].datasize,Mem[z].message,Mem[z].name);//æ¢åˆ°ç½®æ¢åŒº
 				q.pop(); 
 			  	Mem[z].set();
 			  	Mem[z].thread_id=thread_id;
@@ -77,9 +77,9 @@ public:
           
         return iv;        
    }
-    int Write(int thread_id,int data_id,int datasize,string message,string name){//Ğ´ÄÚ´æ¿é ³É¹¦·µ»Ø1 
-        // thread_id Ïß³Ìid  data_id ÄÚ´æ¿éºÅ      
-        if(Mem[data_id].thread_id==thread_id&&datasize<=4) {//Æ¥ÅäÏß³Ìid Êı¾İ´óĞ¡²»³¬¹ı4×Ö½Ú 
+    int Write(int thread_id,int data_id,int datasize,string message,string name){//å†™å†…å­˜å— æˆåŠŸè¿”å›1 
+        // thread_id çº¿ç¨‹id  data_id å†…å­˜å—å·      
+        if(Mem[data_id].thread_id==thread_id&&datasize<=4) {//åŒ¹é…çº¿ç¨‹id æ•°æ®å¤§å°ä¸è¶…è¿‡4å­—èŠ‚ 
         	Mem[data_id].datasize=datasize;
         	Mem[data_id].message=message;
         	Mem[data_id].name=name;
@@ -87,12 +87,12 @@ public:
 		} else
 		return 0;
     }
-    int Delete(int thread_id){//ÊÍ·ÅÄÚ´æ
-        //thread_id  Ïß³Ìid ½«´ËÏß³ÌÕ¼ÓÃµÄÄÚ´æ¿é»ØÊÕ£¬²¢É¾³ı¶Ô»»ÇøÀïÓĞ¹ØµÄÊı¾İ 
-        //return 0/1  Ê§°Ü/³É¹¦   Ê§
+    int Delete(int thread_id){//é‡Šæ”¾å†…å­˜
+        //thread_id  çº¿ç¨‹id å°†æ­¤çº¿ç¨‹å ç”¨çš„å†…å­˜å—å›æ”¶ï¼Œå¹¶åˆ é™¤å¯¹æ¢åŒºé‡Œæœ‰å…³çš„æ•°æ® 
+        //return 0/1  å¤±è´¥/æˆåŠŸ   å¤±
         int F=q.front();
         int G=free;
-       for(int i=0;i<16-G;i++){//É¾³ı»ØÊÕ£¬ĞŞ¸Äfree¡¢¶ÓÁĞq 
+       for(int i=0;i<16-G;i++){//åˆ é™¤å›æ”¶ï¼Œä¿®æ”¹freeã€é˜Ÿåˆ—q 
         	int a=q.front();
         	q.pop();
         	if(Mem[a].thread_id==thread_id){
@@ -101,19 +101,19 @@ public:
 			}
 			else q.push(a); 
 		}
-		if(disk::DelSwap(thread_id))//µ÷ÓÃ´ÅÅÌ¹ÜÀíµÄº¯Êı ¶Ò»»ÇøÉ¾³ı³É¹¦£¬·µ»Ø1 
+		if(disk::DelSwap(thread_id))//è°ƒç”¨ç£ç›˜ç®¡ç†çš„å‡½æ•° å…‘æ¢åŒºåˆ é™¤æˆåŠŸï¼Œè¿”å›1 
 			return 1;
 		else
 			return 0;
     }
-    int InMem(string name){//ÅĞ¶ÏÎÄ¼şÊÇ·ñÔÚÄÚ´æ  ³É¹¦·µ»Ø1 
+    bool InMem(string name){//åˆ¤æ–­æ–‡ä»¶æ˜¯å¦åœ¨å†…å­˜  æˆåŠŸè¿”å›1 
     	for(int i=0;i<16;i++){
     		if(Mem[i].name==name)
     			return 1;
 		}
 		return 0;
 	}
-	void show(){//ÏÔÊ¾ÄÚ´æÊı¾İ 
+	void show(){//æ˜¾ç¤ºå†…å­˜æ•°æ® 
 		for(int i=0;i<16;i++){
 			cout<<i<<" "<<Mem[i].sign<<" "<<Mem[i].thread_id<<" "<<Mem[i].name<<" "<<Mem[i].datasize<<" "<<Mem[i].message<<endl;
 		}

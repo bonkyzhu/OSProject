@@ -42,6 +42,7 @@ vector<int> disk::write(int datablocknum){
   cout << datablocknum << endl;
   vector<int> tmp;
   if (this->enough_block(datablocknum) == false) {
+    cout<< "盘块不够" <<endl;
     return tmp;
   }
 

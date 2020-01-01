@@ -2,7 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <cmath>
-#include <sys/malloc.h>
+#include <malloc.h>
 #include "disk.h"
 #include "define.h"
 #include "index_table.h"

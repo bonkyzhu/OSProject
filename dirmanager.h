@@ -6,7 +6,7 @@
 #include "memmanager.h"
 using namespace std;
 
-//Ä¿Â¼ 
+//ç›®å½• 
 class Dir{
 	public:
 		Dir(){
@@ -16,11 +16,11 @@ class Dir{
 			FileStructure="NULL";
 			adr=0; 
 		}
-	 string FileName; //ÎÄ¼şÃû
-	 string FileOwner ;//ÎÄ¼şËùÓĞÕß
-	 char *Date;//´´½¨Ê±¼ä 
-	 string  FileStructure;//ÎÄ¼ş½á¹¹ 
-	 int adr;//ÔÙ´ÅÅÌÖĞ´æ·ÅµÄµØÖ·ĞÅÏ¢ 
+	 string FileName; //æ–‡ä»¶å
+	 string FileOwner ;//æ–‡ä»¶æ‰€æœ‰è€…
+	 char *Date;//åˆ›å»ºæ—¶é—´ 
+	 string  FileStructure;//æ–‡ä»¶ç»“æ„ 
+	 int adr;//å†ç£ç›˜ä¸­å­˜æ”¾çš„åœ°å€ä¿¡æ¯ 
 	 void setFileName(string a);
 	 void setFileOwner(string b);
 	 void setDate(char *c);
@@ -47,59 +47,56 @@ class Dir{
 	 	cout<<FileName<<endl;
 	 }
 	 
-	 
 class DirMan{
 	public:
 	map<string,Dir> DirMap;
-	void CreatNullDir(string x);//´´½¨¿ÕÄ¿Â¼Ïî 
-	void DelNullDir();//É¾³ı¿ÕÄ¿Â¼Ïî 
-	void DelFile(string x);//É¾³ıÎÄ¼ş 
-	void CreatDir(string owner,string filename,int address,string structer);//ÎªÎÄ¼ş´´½¨Ä¿Â¼Ïî 
-	void ShowDirMan();//±éÀúÏÔÊ¾µ±Ç°µÄËùÓĞÄ¿Â¼Ïî 
+	void CreatNullDir(string x);//åˆ›å»ºç©ºç›®å½•é¡¹ 
+	void DelNullDir();//åˆ é™¤ç©ºç›®å½•é¡¹ 
+	void DelFile(string x);//åˆ é™¤æ–‡ä»¶ 
+	void CreatDir(string owner,string filename,int address,string structer);//ä¸ºæ–‡ä»¶åˆ›å»ºç›®å½•é¡¹ 
+	void ShowDirMan();//éå†æ˜¾ç¤ºå½“å‰çš„æ‰€æœ‰ç›®å½•é¡¹ 
 };
-	void DirMan::CreatNullDir(string x){ //xÊÇ ÎÄ¼şÓµÓĞÕß£» 
-		//¿ÕÄ¿Â¼ÏîÊ±¼ä 
+	void DirMan::CreatNullDir(string x){ //xæ˜¯ æ–‡ä»¶æ‹¥æœ‰è€…ï¼› 
+		//ç©ºç›®å½•é¡¹æ—¶é—´ 
 		Dir dir;
 		time_t now=time(0);
 		char*dt=ctime(&now);
 		dir.Dir::setDate(dt);
 		dir.Dir::setFileOwner(x);
-		//¿ÕÄ¿Â¼µÄÎÄ¼şÃû 
+		//ç©ºç›®å½•çš„æ–‡ä»¶å 
 		dir.Dir::setFileName("NULLFILE");
-		//¿ÕÄ¿Â¼µÄµØÖ·
+		//ç©ºç›®å½•çš„åœ°å€
 		dir.Dir::setadr(0); 
-		//ÎÄ¼ş½á¹¹
+		//æ–‡ä»¶ç»“æ„
 		dir.Dir::setFileStructure("NULL"); 
 		DirMap.insert(map<string, Dir>::value_type(dir.FileName, dir));
 	}
-
 	void DirMan::DelNullDir(){
 		DirMap.erase("NULL");
 	}
 	void DirMan::DelFile(string x){
-		int t=Memory::InMem(x);//ÄÚ´æ¹ÜÀíÖĞµÄº¯Êı£¬¸ù¾İÎÄ¼şÃûÅĞ¶ÏÊÇ·ñÔÚÄÚ´æÖĞ 
-		if(!t){
-			DirMap.erase(x); //É¾³ıÄ¿Â¼ 
-			//´Ë´¦ĞèÒªÉ¾³ıÎÄ¼şÔÚ´ÅÅÌÖĞ¶ÔÓ¦µÄÊı¾İ£» 
+		if(!Memory::InMem(x)){	//å†…å­˜ç®¡ç†ä¸­çš„å‡½æ•°ï¼Œæ ¹æ®æ–‡ä»¶ååˆ¤æ–­æ˜¯å¦åœ¨å†…å­˜ä¸­ 
+			DirMap.erase(x); //åˆ é™¤ç›®å½• 
+			//æ­¤å¤„éœ€è¦åˆ é™¤æ–‡ä»¶åœ¨ç£ç›˜ä¸­å¯¹åº”çš„æ•°æ®ï¼› 
 		}
 	}
 	void DirMan::CreatDir(string owner,string filename,int address,string structer){
 		Dir dir;
-		//Ê±¼ä 
+		//æ—¶é—´ 
 		time_t now=time(0);
 		char*dt=ctime(&now);
 		dir.Dir::setDate(dt);
-		//ÓµÓĞÕß 
+		//æ‹¥æœ‰è€… 
 		dir.Dir::setFileOwner(owner);
-		//ÎÄ¼şÃû 
+		//æ–‡ä»¶å 
 		dir.Dir::setFileName(filename);
-		//µØÖ·
+		//åœ°å€
 		dir.Dir::setadr(address);
-		//ÎÄ¼ş½á¹¹
+		//æ–‡ä»¶ç»“æ„
 		dir.Dir::setFileStructure(structer);
-		//¼ÓÈëÄ¿Â¼
+		//åŠ å…¥ç›®å½•
 		DirMap.insert(map<string, Dir>::value_type(dir.FileName, dir));
-		cout<<dir.FileName<<"ÒÑ´´½¨³É¹¦"<<endl; 
+		cout<<dir.FileName<<"å·²åˆ›å»ºæˆåŠŸ"<<endl; 
 	}
 	void DirMan::ShowDirMan(){
 		map<string,Dir>::iterator it;
