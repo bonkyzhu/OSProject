@@ -18,7 +18,7 @@ class disk{
     int sparedatadisk[DATA_BLOCK_NUM]; // 用位示图表示空余磁盘块
     int spareswapdisk[SWAP_BLOCK_NUM]; // 用位示图表示空余磁盘块
     string datapart[DATA_BLOCK_NUM]; // 代表真实的数据区
-    string swappart[SWAP_BLOCK_NUM]; // 代表真实的 对换区
+    string swappart[SWAP_BLOCK_NUM]; // 代表真实的对换区
     int sparedatablock;
 };
 
@@ -55,7 +55,7 @@ vector<int> disk::write(string data, int datablocknum){
       tmp.push_back(i);
 
       // 每四个字符一个块, 最后需要判断以下，有可能最后的小于四个字符
-      this->swappart[i] = data.substr(data_point, min(4, datasize-data_point));
+      this->datapart[i] = data.substr(data_point, min(4, datasize-data_point));
       data_point += 4;
 
       this->sparedatablock = this->sparedatablock - 1;
