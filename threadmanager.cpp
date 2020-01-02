@@ -17,6 +17,7 @@ using namespace std;
 class ThreadMan{
     public:
     int thread_id;
+    mutex mtx;
     string randst(int n);   //生成长度为n的随机字符串
     void Generate(int Thread_id);  //数据生成线程
     void Delete(int Thread_id);    //删除数据线程
@@ -70,6 +71,7 @@ void ThreadMan::Delete(int Thread_id)    //删除数据线程
 }
 void ThreadMan::Execute(int Thread_id)    //执行线程
 {
+    mtx.lock();
     string file_name;
     cout<<"当前目录内容"<<endl;
     Dirs.ShowDirMan();
@@ -77,6 +79,7 @@ void ThreadMan::Execute(int Thread_id)    //执行线程
     cin>>file_name;
     Mems.Alloc(thread_id,file_name);
     Mems.show();
+    mtx.unlock();
     return ;
 }
 int main()
