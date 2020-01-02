@@ -18,9 +18,9 @@ class ThreadMan{
     public:
     mutex mtx;                      //声明互斥量
     string randst(int n);           //生成长度为n的随机字符串
-    void Generate(int Thread_id);   //数据生成功能
-    void Delete(int Thread_id);     //删除数据功能
-    void Execute(int Thread_id);    //执行功能
+    void Generate(int data_size,string file_name,int Thread_id);   //数据生成功能
+    void Delete(string file_name,int Thread_id);     //删除数据功能
+    void Execute(string file_name,int Thread_id);    //执行功能
 };
 string ThreadMan::randst(int n)
 {
@@ -32,16 +32,12 @@ string ThreadMan::randst(int n)
     }
     return s;
 }
-void ThreadMan::Generate(int Thread_id)  //数据生成功能
+void ThreadMan::Generate(int data_size,string file_name,int Thread_id)  //数据生成功能
 {
     //(*pmt).lock();
-    cout<<"请输入数据大小（按字节计算）、文件名，中间以空格分开，回车以结束"<<endl;
-    int data_length;
-    string file_name;
-    cin>>data_length;
-    cin>>file_name;
+    
     string content;
-    content=randst(data_length);
+    content=randst(data_size);
     //cout<<content<<endl;
     A_Disk.CreateFile(file_name,content);
     Dirs.CreatDir("admin",file_name,"");
@@ -50,16 +46,11 @@ void ThreadMan::Generate(int Thread_id)  //数据生成功能
     //(*pmt).unlock();
     return;
 }
-void ThreadMan::Delete(int Thread_id)    //删除数据功能
+void ThreadMan::Delete(string file_name,int Thread_id)    //删除数据功能
 {
     //(*pmt).lock();
-    string temp;
-    cout<<"当前目录内容"<<endl;
-    Dirs.ShowDirMan();
-    cout<<"请输入删除文件名字，回车以结束"<<endl;
-    cin>>temp;
-    if(Dirs.check(temp))
-        Dirs.DelFile(temp);
+    if(Dirs.check(file_name))
+        Dirs.DelFile(file_name);
     else 
         cout<<"错误，无此文件！"<<endl;
     cout<<"当前目录内容"<<endl;
@@ -67,14 +58,9 @@ void ThreadMan::Delete(int Thread_id)    //删除数据功能
     //(*pmt).unlock();
     return;
 }
-void ThreadMan::Execute(int Thread_id)    //执行功能
+void ThreadMan::Execute(string file_name,int Thread_id)    //执行功能
 {
     mtx.lock();
-    string file_name;
-    cout<<"当前目录内容"<<endl;
-    Dirs.ShowDirMan();
-    cout<<"请输入要执行的文件名"<<endl;
-    cin>>file_name;
     Mems.Alloc(Thread_id,file_name);
     Mems.show();
     mtx.unlock();
@@ -84,6 +70,7 @@ int main()
 {
     int op;
     int id=0;
+    string Fname;
     ThreadMan TA;
     //mutex mt;
     do{
@@ -93,19 +80,31 @@ int main()
         switch(op){
             case 1:
             {
-                thread gen(&ThreadMan::Generate,&TA,++id);
+                int n;
+                cout<<"请输入数据大小（按字节计算）、文件名，中间以空格分开，回车以结束"<<endl;
+                cin>>n;
+                cin>>Fname;
+                thread gen(&ThreadMan::Generate,&TA,n,Fname,++id);
                 gen.join();
                 break;
             }
             case 2:
             {
-                thread del(&ThreadMan::Delete,&TA,++id);
+                cout<<"当前目录内容"<<endl;
+                Dirs.ShowDirMan();
+                cout<<"请输入删除文件名字，回车以结束"<<endl;
+                cin>>Fname;
+                thread del(&ThreadMan::Delete,&TA,Fname,++id);
                 del.join();
                 break;
             }
             case 3:
             {
-                thread exe(&ThreadMan::Execute,&TA,++id);
+                cout<<"当前目录内容"<<endl;
+                Dirs.ShowDirMan();
+                cout<<"请输入要执行的文件名"<<endl;
+                cin>>Fname;
+                thread exe(&ThreadMan::Execute,&TA,Fname,++id);
                 exe.join();
                 break;
             }
