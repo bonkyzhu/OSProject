@@ -4,6 +4,9 @@
 #include <thread>
 #include <chrono>
 #include <mutex>
+#include <cstdlib>
+#include <ctime>
+#include <vector>
 
 #include"disk.h"
 #include"dirmanager.h"
@@ -13,14 +16,26 @@ using namespace std;
 class Thread{
     public:
     int thread_id;
+    string randst(int n);   //生成长度为n的随机字符串
     void Generate();  //数据生成线程
     void Delete();    //删除数据线程
     void Excute();    //执行线程
 }
+string Thread::randst(int n)
+{
+    srand((unsigned)time(NULL));
+    string s;
+    for(int i=0;i<n;i++)
+    {
+        s+=rand()%26+'a';
+    }
+    cout<<s<<endl;
+    return ;
+}
 void Thread::Generate(mutex* pmt)  //数据生成线程
 {
     (*pmt).lock();
-    cout<<"请输入数据大小（按字节计算）、数据信息（英文字母）、存储目录、文件名，中间以空格分开，回车以结束"<<endl;
+    cout<<"请输入数据大小（按字节计算）、文件名，中间以空格分开，回车以结束"<<endl;
     Data temp;
     string dir;
     string storage_dir;
@@ -54,14 +69,17 @@ void Thread::Delete(mutex* pmt)    //删除数据线程
     (*pmt).unlock();
     return;
 }
-void Thread::Excute(mutex* pmt)    //执行线程
+void Thread::Excute(int Thread_id,mutex* pmt)    //执行线程
 {
     (*pmt).lock();
     /*
     * 外存调入内存(待完成)
     * (1)内存管理->空闲空间管理，申请4块空闲内存
     */
-    Memory::Alloc(4,thread_id);
+    vector<int> loc;
+    loc=Memory::Alloc(4,thread_id);
+    for(vector<int>::iterator it=loc.begin();it!=loc.end();it++)
+        Memory::Write(Thread_id,*it,4,);
     if(/*内存不足*/)
     {
         cout<<"内存不足"<<endl;
@@ -74,4 +92,3 @@ void Thread::Excute(mutex* pmt)    //执行线程
     (*pmt).unlock();
     return ;
 }
-

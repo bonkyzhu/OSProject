@@ -166,6 +166,6 @@ int main(){//我把调用磁盘管理的两个函数注释了，不然不能执�
 		a.Write(4,iv2[3],4,"kshafa","ggg");
 		a.show();
 		
-		cout<<a.InMem("sgf");//用文件命查看此文件是否调入内存 
+		cout<<a.InMem("ggg");//用文件命查看此文件是否调入内存 
 		return 0;
 }
