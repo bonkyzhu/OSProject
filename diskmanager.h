@@ -8,19 +8,18 @@ using namespace std;
 
 class diskmanager {
   public:
-    void initiate();
+    diskmanager(){
+      this->thedisk.initiate();
+    }
     int CreateFile(string filename, string data); // 写入数据区，满了的话就返回0，成功写入返回1
     string ReadFile(string filename); // 不确定需要 message 吗
     int DeleteFile(string filename); // 删除数据，
-//    int swap(int thread_id, int datasize, string message, string name);
-//    int DelSwap(int thread_id);
+    int swap(string data);
+    int DelSwap(int swapblocknum);
   private:
     disk thedisk; // 代表disk
     map<string, inode> inodes; // string = 文件夹+文件名
 };
-void diskmanager::initiate() {
-  this->thedisk.initiate();
-}
 
 int diskmanager::CreateFile(string filename, string data) {
   // 创建一个文件, data是文件的数据，filename 是文件的绝对路径
@@ -58,5 +57,4 @@ int diskmanager::DeleteFile(string filename) {
   return 1;
 }
 
-
-
+diskmanager A_Disk;

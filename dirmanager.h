@@ -6,6 +6,7 @@
 #include "memmanager.h"
 using namespace std;
 
+
 //Ŀ¼ 
 class Dir{
 	public:
