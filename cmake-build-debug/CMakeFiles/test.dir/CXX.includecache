@@ -8,6 +8,22 @@
 
 /Users/bonky/OneDrive/文档/学校资料存档/操作系统/课设/define.h
 
+/Users/bonky/OneDrive/文档/学校资料存档/操作系统/课设/dirmanager.h
+string
+-
+string.h
+-
+ctime
+-
+iostream
+-
+map
+-
+diskmanager.h
+/Users/bonky/OneDrive/文档/学校资料存档/操作系统/课设/diskmanager.h
+memmanager.h
+/Users/bonky/OneDrive/文档/学校资料存档/操作系统/课设/memmanager.h
+
 /Users/bonky/OneDrive/文档/学校资料存档/操作系统/课设/disk.h
 iostream
 -
@@ -51,8 +67,6 @@ algorithm
 -
 cmath
 -
-sys/malloc.h
--
 disk.h
 /Users/bonky/OneDrive/文档/学校资料存档/操作系统/课设/disk.h
 define.h
@@ -60,9 +74,21 @@ define.h
 index_table.h
 /Users/bonky/OneDrive/文档/学校资料存档/操作系统/课设/index_table.h
 
+/Users/bonky/OneDrive/文档/学校资料存档/操作系统/课设/memmanager.h
+iostream
+-
+queue
+-
+
 /Users/bonky/OneDrive/文档/学校资料存档/操作系统/课设/unit_test.cpp
 iostream
 -
+define.h
+/Users/bonky/OneDrive/文档/学校资料存档/操作系统/课设/define.h
 diskmanager.h
 /Users/bonky/OneDrive/文档/学校资料存档/操作系统/课设/diskmanager.h
+dirmanager.h
+/Users/bonky/OneDrive/文档/学校资料存档/操作系统/课设/dirmanager.h
+memmanager.h
+/Users/bonky/OneDrive/文档/学校资料存档/操作系统/课设/memmanager.h
 

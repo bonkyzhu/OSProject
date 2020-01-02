@@ -8,11 +8,16 @@ using namespace std;
 // direct_index_table 类
 class direct_index_table{
   public:
+    direct_index_table(){
+      for (int i = 0; i < INDEX_TABLE_SIZE; ++i) {
+        this->blockindex[i] = -1;
+      }
+    }
     vector<int> get_elem(); //返回所有的 block 索引
     bool write(int blocknum);
   private:
     int length=0;
-    int blockindex[INDEX_TABLE_SIZE] = {-1};
+    int blockindex[INDEX_TABLE_SIZE];
 };
 vector<int> direct_index_table::get_elem(){
   vector<int> tmp;

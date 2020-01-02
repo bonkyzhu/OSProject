@@ -2,7 +2,6 @@
 #include <vector>
 #include <algorithm>
 #include <cmath>
-#include <sys/malloc.h>
 #include "disk.h"
 #include "define.h"
 #include "index_table.h"
@@ -24,7 +23,6 @@ class inode{
 int inode::initiate_inode(string data, int datasize, disk &thedisk) {
   //如果磁盘空间不够的话返回 0
   int block_num = ceil(datasize / BLOCK_SIZE);
-  cout << data << endl;
   vector<int> addresses = thedisk.write(data, block_num);
   if (addresses.empty()){
       cout << "ERROR with disk." << endl;
@@ -71,7 +69,7 @@ vector<int> inode::get_index() { // 得到所有的 index
 }
 //把他放到 index——table 里面
 void inode::to_index_table(vector<int> addresses, int blocknum){
-    int length = blocknum;
+  int length = blocknum;
   for (int i = 0; i < min(length, 10); i++) {
       this->direct[i] = addresses[i];
   }

@@ -1,3 +1,5 @@
+#ifndef _C_H_
+#define _C_H_
 #include <iostream>
 #include <vector>
 #include <map>
@@ -12,7 +14,7 @@ class diskmanager {
       this->thedisk.initiate();
     }
     int CreateFile(string filename, string data); // 写入数据区，满了的话就返回0，成功写入返回1
-    string ReadFile(string filename); // 不确定需要 message 吗
+    string ReadFile(string filename);
     int DeleteFile(string filename); // 删除数据，
     int swap(string data);
     int DelSwap(int swapblocknum);
@@ -25,6 +27,7 @@ int diskmanager::CreateFile(string filename, string data) {
   // 创建一个文件, data是文件的数据，filename 是文件的绝对路径
   inode File;
   // 如果磁盘空间足够
+  cout << data << endl;
   if (File.initiate_inode(data, data.size(), this->thedisk) == 1){
     this->inodes.insert(pair<string, inode>(filename, File));
     return 1; // 说明创建完成
@@ -69,3 +72,4 @@ int diskmanager::DelSwap(int swapblocknum) {
   return 0;
 }
 diskmanager A_Disk;
+#endif
