@@ -14,11 +14,11 @@ public:
       sign=0;
       thread_id=0;
     }
-    int datasize;//Êı¾İ´óĞ¡£¬¶àÉÙ×Ö½Ú
-    string message;//Êı¾İĞÅÏ¢
-    string name;//ÎÄ¼şÃû
-    int sign;//±êÖ¾Î»
-    int thread_id;//ËùÊôÏß³Ìid
+    int datasize;//æ•°æ®å¤§å°ï¼Œå¤šå°‘å­—èŠ‚
+    string message;//æ•°æ®ä¿¡æ¯
+    string name;//æ–‡ä»¶å
+    int sign;//æ ‡å¿—ä½
+    int thread_id;//æ‰€å±çº¿ç¨‹id
     void set() {
       datasize=0;
       message="NULL";
@@ -27,7 +27,7 @@ public:
       thread_id=0;
     }
 };
-class Memory { //ÄÚ´æ
+class Memory { //å†…å­˜
 public:
     Data Mem [16];
 
@@ -39,18 +39,18 @@ public:
       free=16;
     }
     int pos;
-    int Ex_a[16][124];//´æ¶Ò»»ÇøµØÖ·
-    int Ex_i[16]; //ÓÃÓÚEx_aÊı×é
-    int free;//¿ÕÏĞ¿éÊı
-    queue<int> q;//·ûºÏFIFOËã·¨µÄµ÷³ö¶ÓÁĞ
-    int Alloc(int thread_id,string name) { //ÉêÇëÄÚ´æ¿é£¬´Ó¿ÕÏĞ¿éÖĞÕÒ»òÕß¶Ô»»
-      //Mb_num ÉêÇëµÄÄÚ´æ¿éÊı    thread_id  Ïß³Ìid
-      //return ÄÚ´æ¿éºÅµÄÊı×é
+    int Ex_a[16][124];//å­˜å…‘æ¢åŒºåœ°å€
+    int Ex_i[16]; //ç”¨äºEx_aæ•°ç»„
+    int free;//ç©ºé—²å—æ•°
+    queue<int> q;//ç¬¦åˆFIFOç®—æ³•çš„è°ƒå‡ºé˜Ÿåˆ—
+    int Alloc(int thread_id,string name) { //ç”³è¯·å†…å­˜å—ï¼Œä»ç©ºé—²å—ä¸­æ‰¾æˆ–è€…å¯¹æ¢
+      //Mb_num ç”³è¯·çš„å†…å­˜å—æ•°    thread_id  çº¿ç¨‹id
+      //return å†…å­˜å—å·çš„æ•°ç»„
       string str;
-      int Mb_num;//ÉêÇëµÄÄÚ´æ¿éÊı
+      int Mb_num;//ç”³è¯·çš„å†…å­˜å—æ•°
       str=A_Disk.ReadFile(name);
       if(str.length()>64){
-        cout<<"ÎÄ¼ş¹ı´ó£¬ÄÚ´æ²»×ã";
+        cout<<"æ–‡ä»¶è¿‡å¤§ï¼Œå†…å­˜ä¸è¶³";
         return 0;
       }else {
         if(str.length()%4==0){
@@ -78,7 +78,7 @@ public:
             }
           }
           free=free-Mb_num;
-        } else { //ĞèÒªÖÃ»»
+        } else { //éœ€è¦ç½®æ¢
           for(int i=0; i<free; i++) {
             for(int j=0; j<16; j++) {
               if(Mem[j].sign==0) {
@@ -94,8 +94,8 @@ public:
             }
           }
           for(int j=0; j<Mb_num-free; j++) {
-            int z=q.front();//ÒªÖÃ»»³öÈ¥µÄ¿éºÅ
-            Ex_a[thread_id][Ex_i[thread_id]]=A_Disk.swap(Mem[z].message);//»»µ½ÖÃ»»Çø
+            int z=q.front();//è¦ç½®æ¢å‡ºå»çš„å—å·
+            Ex_a[thread_id][Ex_i[thread_id]]=A_Disk.swap(Mem[z].message);//æ¢åˆ°ç½®æ¢åŒº
             Ex_i[thread_id]++;
             q.pop();
             Mem[z].set();
@@ -121,12 +121,12 @@ public:
 
     }
 
-    int Delete(int thread_id) { //ÊÍ·ÅÄÚ´æ
+    int Delete(int thread_id) { //é‡Šæ”¾å†…å­˜
       //  (int thread_id)
-      //thread_id  Ïß³Ìid   ½«ËùÓĞÓëthreadidÒ»ÑùµÄ¿éÉ¾ÁË»ØÊÕ£¬Í¨Öª´ÅÅÌÉ¾ÁË¶Ô»»Çø
+      //thread_id  çº¿ç¨‹id   å°†æ‰€æœ‰ä¸threadidä¸€æ ·çš„å—åˆ äº†å›æ”¶ï¼Œé€šçŸ¥ç£ç›˜åˆ äº†å¯¹æ¢åŒº
       int F=q.front();
       int G=free;
-      for(int i=0; i<16-G; i++) { //É¾³ı»ØÊÕ£¬ĞŞ¸Äfree¡¢¶ÓÁĞq
+      for(int i=0; i<16-G; i++) { //åˆ é™¤å›æ”¶ï¼Œä¿®æ”¹freeã€é˜Ÿåˆ—q
         int a=q.front();
         q.pop();
         if(Mem[a].thread_id==thread_id) {
@@ -135,7 +135,7 @@ public:
         } else q.push(a);
       }
 
-      for(int i=0; i<Ex_i[thread_id]; i++) { //µ÷ÓÃ´ÅÅÌ¹ÜÀíµÄº¯ÊıÉ¾³ı¶Ò»»Çø¶ÔÓ¦µÄÎÄ¼ş
+      for(int i=0; i<Ex_i[thread_id]; i++) { //è°ƒç”¨ç£ç›˜ç®¡ç†çš„å‡½æ•°åˆ é™¤å…‘æ¢åŒºå¯¹åº”çš„æ–‡ä»¶
         A_Disk.DelSwap(Ex_a[thread_id][i]);
         Ex_a[thread_id][i]=0;
       }
@@ -143,14 +143,14 @@ public:
 
       return 1;
     }
-    int InMem(string name) { //ÅĞ¶ÏÎÄ¼şÊÇ·ñÔÚÄÚ´æ
+    int InMem(string name) { //åˆ¤æ–­æ–‡ä»¶æ˜¯å¦åœ¨å†…å­˜
       for(int i=0; i<16; i++) {
         if(Mem[i].name==name)
           return 1;
       }
       return 0;
     }
-    void show() { //ÏÔÊ¾ÄÚ´æÊı¾İ
+    void show() { //æ˜¾ç¤ºå†…å­˜æ•°æ®
       for(int i=0; i<16; i++) {
         cout<<i<<" "<<Mem[i].sign<<" "<<Mem[i].thread_id<<" "<<Mem[i].name<<" "<<Mem[i].datasize<<" "<<Mem[i].message<<endl;
       }
