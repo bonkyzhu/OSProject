@@ -13,6 +13,9 @@ class disk{
     string read(int blockindex);
     bool enough_block(int datablocknum);
     bool delete_block(int blockindex);
+    string read_swap(int blockindex);
+    int write_swap(string datablock);
+    int delete_swap(int blockindex);
     void initiate();
   private:
     int sparedatadisk[DATA_BLOCK_NUM]; // 用位示图表示空余磁盘块
@@ -82,5 +85,26 @@ bool disk::delete_block(int blockindex){
 
 string disk::read(int blockindex){
   return this->datapart[blockindex];
+}
+
+int disk::write_swap(string datablock) { // 没有的时候返回-1
+  for (int i = 0; i < SWAP_BLOCK_NUM; ++i) {
+    if(this->spareswapdisk[i]==0){
+      this->spareswapdisk[i] = 1;
+      this->swappart[i] = datablock;
+      return i;
+    }
+  }
+  return -1;
+}
+string disk::read_swap(int blockindex) {
+  return this->swappart[blockindex];
+}
+int disk::delete_swap(int blockindex) { //删除成功为1，否则为0
+  if(this->spareswapdisk[blockindex]==1){
+    this->swappart[blockindex] = "";
+    return 1;
+  }
+  return 0;
 }
 #endif

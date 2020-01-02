@@ -56,5 +56,16 @@ int diskmanager::DeleteFile(string filename) {
   this->inodes.erase(filename); //删除对应 inode
   return 1;
 }
-
+int diskmanager::swap(string data) {
+  if(this->thedisk.write_swap(data)){
+    return 1;
+  }
+  return 0;
+}
+int diskmanager::DelSwap(int swapblocknum) {
+  if(this->thedisk.delete_swap(swapblocknum)){
+    return 1;
+  }
+  return 0;
+}
 diskmanager A_Disk;
