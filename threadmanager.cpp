@@ -16,13 +16,11 @@
 using namespace std; 
 class ThreadMan{
     public:
-    int thread_id;
-    mutex mtx;
-    string randst(int n);   //生成长度为n的随机字符串
-    void Generate(int Thread_id);  //数据生成线程
-    void Delete(int Thread_id);    //删除数据线程
-    void Execute(int Thread_id);    //执行线程
-    string name;
+    mutex mtx;                      //声明互斥量
+    string randst(int n);           //生成长度为n的随机字符串
+    void Generate(int Thread_id);   //数据生成功能
+    void Delete(int Thread_id);     //删除数据功能
+    void Execute(int Thread_id);    //执行功能
 };
 string ThreadMan::randst(int n)
 {
@@ -34,7 +32,7 @@ string ThreadMan::randst(int n)
     }
     return s;
 }
-void ThreadMan::Generate(int Thread_id)  //数据生成函数
+void ThreadMan::Generate(int Thread_id)  //数据生成功能
 {
     //(*pmt).lock();
     cout<<"请输入数据大小（按字节计算）、文件名，中间以空格分开，回车以结束"<<endl;
@@ -52,7 +50,7 @@ void ThreadMan::Generate(int Thread_id)  //数据生成函数
     //(*pmt).unlock();
     return;
 }
-void ThreadMan::Delete(int Thread_id)    //删除数据线程
+void ThreadMan::Delete(int Thread_id)    //删除数据功能
 {
     //(*pmt).lock();
     string temp;
@@ -69,7 +67,7 @@ void ThreadMan::Delete(int Thread_id)    //删除数据线程
     //(*pmt).unlock();
     return;
 }
-void ThreadMan::Execute(int Thread_id)    //执行线程
+void ThreadMan::Execute(int Thread_id)    //执行功能
 {
     mtx.lock();
     string file_name;
@@ -77,7 +75,7 @@ void ThreadMan::Execute(int Thread_id)    //执行线程
     Dirs.ShowDirMan();
     cout<<"请输入要执行的文件名"<<endl;
     cin>>file_name;
-    Mems.Alloc(thread_id,file_name);
+    Mems.Alloc(Thread_id,file_name);
     Mems.show();
     mtx.unlock();
     return ;
