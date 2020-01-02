@@ -17,10 +17,10 @@ public:
       Date=NULL;
       FileStructure="NULL";
     }
-    string FileName; //ÎÄ¼şÃû
-    string FileOwner ;//ÎÄ¼şËùÓĞÕß
-    char *Date;//´´½¨Ê±¼ä
-    string  FileStructure;//ÎÄ¼ş½á¹¹
+    string FileName; //æ–‡ä»¶å
+    string FileOwner ;//æ–‡ä»¶æ‰€æœ‰è€…
+    char *Date;//åˆ›å»ºæ—¶é—´
+    string  FileStructure;//æ–‡ä»¶ç»“æ„
     void setFileName(string a);
     void setFileOwner(string b);
     void setDate(char *c);
@@ -47,22 +47,23 @@ void Dir::show(){
 class DirMan{
 public:
     map<string,Dir> DirMap;
-    void CreatNullDir(string x);//´´½¨¿ÕÄ¿Â¼Ïî
-    void DelNullDir();//É¾³ı¿ÕÄ¿Â¼Ïî
-    void DelFile(string x);//É¾³ıÎÄ¼ş
-    void CreatDir(string owner,string filename,string structer);//ÎªÎÄ¼ş´´½¨Ä¿Â¼Ïî
-    void ShowDirMan();//±éÀúÏÔÊ¾µ±Ç°µÄËùÓĞÄ¿Â¼Ïî
+    void CreatNullDir(string x);//åˆ›å»ºç©ºç›®å½•é¡¹
+    void DelNullDir();//åˆ é™¤ç©ºç›®å½•é¡¹
+    bool check(string x);
+    void DelFile(string x);//åˆ é™¤æ–‡ä»¶
+    void CreatDir(string owner,string filename,string structer);//ä¸ºæ–‡ä»¶åˆ›å»ºç›®å½•é¡¹
+    void ShowDirMan();//éå†æ˜¾ç¤ºå½“å‰çš„æ‰€æœ‰ç›®å½•é¡¹
 };
-void DirMan::CreatNullDir(string x){ //xÊÇ ÎÄ¼şÓµÓĞÕß£»
-  //¿ÕÄ¿Â¼ÏîÊ±¼ä
+void DirMan::CreatNullDir(string x){ //xæ˜¯ æ–‡ä»¶æ‹¥æœ‰è€…ï¼›
+  //ç©ºç›®å½•é¡¹æ—¶é—´
   Dir dir;
   time_t now=time(0);
   char*dt=ctime(&now);
   dir.Dir::setDate(dt);
   dir.Dir::setFileOwner(x);
-  //¿ÕÄ¿Â¼µÄÎÄ¼şÃû
+  //ç©ºç›®å½•çš„æ–‡ä»¶å
   dir.Dir::setFileName("NULLFILE");
-  //ÎÄ¼ş½á¹¹
+  //æ–‡ä»¶ç»“æ„
   dir.Dir::setFileStructure("NULL");
   DirMap.insert(map<string, Dir>::value_type(dir.FileName, dir));
 }
@@ -70,26 +71,33 @@ void DirMan::CreatNullDir(string x){ //xÊÇ ÎÄ¼şÓµÓĞÕß£»
 void DirMan::DelNullDir(){
   DirMap.erase("NULL");
 }
+bool DirMan::check(string x){
+	map<string,Dir>::iterator iter=DirMap.find(x);
+	if(iter!=DirMap.end()){
+		return 1;
+	}
+	else return 0;
+}
 void DirMan::DelFile(string x){
   int t= Mems.InMem(x);
   if(!t){
-    DirMap.erase(x); //É¾³ıÄ¿Â¼
-    A_Disk.DeleteFile(x); //´Ë´¦ĞèÒªÉ¾³ıÎÄ¼şÔÚ´ÅÅÌÖĞ¶ÔÓ¦µÄÊı¾İ£»
+    DirMap.erase(x); //åˆ é™¤ç›®å½•
+    A_Disk.DeleteFile(x); //æ­¤å¤„éœ€è¦åˆ é™¤æ–‡ä»¶åœ¨ç£ç›˜ä¸­å¯¹åº”çš„æ•°æ®ï¼›
   }
 }
 void DirMan::CreatDir(string owner,string filename,string structer){
   Dir dir;
-  //Ê±¼ä kk4
+  //æ—¶é—´ kk4
   time_t now=time(0);
   char*dt=ctime(&now);
   dir.Dir::setDate(dt);
-  //ÓµÓĞÕß
+  //æ‹¥æœ‰è€…
   dir.Dir::setFileOwner(owner);
-  //ÎÄ¼şÃû
+  //æ–‡ä»¶å
   dir.Dir::setFileName(filename);
-  //ÎÄ¼ş½á¹¹
+  //æ–‡ä»¶ç»“æ„
   dir.Dir::setFileStructure(structer);
-  //¼ÓÈëÄ¿Â¼
+  //åŠ å…¥ç›®å½•
   DirMap.insert(map<string, Dir>::value_type(dir.FileName, dir));
   cout<<dir.FileName<<" is Created."<<endl;
 }
